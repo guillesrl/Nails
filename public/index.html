@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nail Studio - Beautiful Nails, Confident You</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Nail Studio</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#home" class="nav-link">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#about" class="nav-link">About</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#services" class="nav-link">Services & Pricing</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#gallery" class="nav-link">Gallery</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#reviews" class="nav-link">Reviews</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#reservations" class="nav-link">Reservations</a>
+                </li>
+                <li class="nav-item">
+                    <a href="#contact" class="nav-link">Contact</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1>Beautiful Nails, Confident You</h1>
+                <p>Transform your look with our premium nail services and experience the art of perfection.</p>
+                <button class="cta-button" onclick="scrollToBooking()">Book Your Appointment</button>
+            </div>
+            <div class="hero-image">
+                <img src="https://via.placeholder.com/500x600/FFE4E1/000000?text=Beautiful+Nails" alt="Beautiful Nails">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Nail Perfection Starts Here</h2>
+                    <p>At Nail Studio, we believe that beautiful nails are not just a luxury, but a form of self-expression. Our expert technicians combine artistry with precision to deliver stunning results that exceed your expectations.</p>
+                    <button class="secondary-button">See Our Services</button>
+                </div>
+                <div class="about-image">
+                    <img src="https://via.placeholder.com/400x400/FDF5E6/000000?text=Nail+Specialist" alt="Nail Specialist">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Welcome Section -->
+    <section class="welcome">
+        <div class="container">
+            <div class="welcome-content">
+                <h2>Welcome to Your Moment of Calm</h2>
+                <p>Step into our serene studio and let us pamper you with our exceptional nail care services. From classic manicures to intricate nail art, we offer a comprehensive range of treatments designed to enhance your natural beauty.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="container">
+            <h2>Our Services & Pricing</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://via.placeholder.com/300x200/FFE4E1/000000?text=Classic+Manicure" alt="Classic Manicure">
+                    </div>
+                    <div class="service-info">
+                        <h3>Classic Manicure</h3>
+                        <p>Traditional nail care with cuticle treatment and polish application</p>
+                        <span class="price">$25</span>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://via.placeholder.com/300x200/FDF5E6/000000?text=Gel+Manicure" alt="Gel Manicure">
+                    </div>
+                    <div class="service-info">
+                        <h3>Gel Manicure</h3>
+                        <p>Long-lasting gel polish with high shine and durability</p>
+                        <span class="price">$45</span>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://via.placeholder.com/300x200/FFE4E1/000000?text=Nail+Art" alt="Nail Art">
+                    </div>
+                    <div class="service-info">
+                        <h3>Nail Art Design</h3>
+                        <p>Custom artistic designs and creative nail expressions</p>
+                        <span class="price">$35+</span>
+                    </div>
+                </div>
+                <div class="service-card">
+                    <div class="service-image">
+                        <img src="https://via.placeholder.com/300x200/FDF5E6/000000?text=Pedicure" alt="Pedicure">
+                    </div>
+                    <div class="service-info">
+                        <h3>Spa Pedicure</h3>
+                        <p>Luxurious foot treatment with exfoliation and massage</p>
+                        <span class="price">$40</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reservations Section -->
+    <section id="reservations" class="reservations">
+        <div class="container">
+            <h2>Current Reservations</h2>
+            <div class="reservations-container">
+                <div id="reservationsList" class="reservations-list">
+                    <!-- Reservations will be loaded here -->
+                </div>
+                <div id="noReservations" class="no-reservations" style="display: none;">
+                    <p>No reservations found. Be the first to book an appointment!</p>
+                </div>
+            </div>
+            <button class="refresh-button" onclick="loadReservations()">Refresh Reservations</button>
+        </div>
+    </section>
+
+    <!-- Booking Section -->
+    <section id="contact" class="booking">
+        <div class="container">
+            <h2>Book Your Appointment</h2>
+            <div class="booking-form-container">
+                <form id="bookingForm" class="booking-form">
+                    <div class="form-group">
+                        <label for="nombre">Full Name</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="fecha">Preferred Date & Time</label>
+                        <input type="datetime-local" id="fecha" name="fecha" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="evento">Service Type</label>
+                        <select id="evento" name="evento" required>
+                            <option value="">Select a service</option>
+                            <option value="Classic Manicure">Classic Manicure - $25</option>
+                            <option value="Gel Manicure">Gel Manicure - $45</option>
+                            <option value="Nail Art Design">Nail Art Design - $35+</option>
+                            <option value="Spa Pedicure">Spa Pedicure - $40</option>
+                            <option value="Other">Other Service</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="submit-button">Book Appointment</button>
+                </form>
+                <div id="successMessage" class="success-message" style="display: none;">
+                    <h3>Appointment Booked Successfully!</h3>
+                    <p>Thank you for choosing Nail Studio. We'll confirm your appointment shortly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Nail Studio</h3>
+                    <p>Beautiful Nails, Confident You</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>Phone: (555) 123-4567</p>
+                    <p>Email: info@nailstudio.com</p>
+                    <p>Address: 123 Beauty Street, City, State 12345</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Hours</h4>
+                    <p>Monday - Friday: 9:00 AM - 7:00 PM</p>
+                    <p>Saturday: 9:00 AM - 5:00 PM</p>
+                    <p>Sunday: Closed</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Nail Studio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
