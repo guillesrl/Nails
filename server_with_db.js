@@ -88,11 +88,55 @@ async function testConnection(retries = 5) {
 }
 
 // Initialize database
-let dbConnected = false;
-testConnection().then(connected => {
-  dbConnected = connected;
+async function initializeDatabase() {
+  try {
+    console.log('🔍 Testing database connection...');
+    const client = await pool.connect();
+    console.log('✅ Connected to PostgreSQL database');
+    
+    // Test basic query
+    const result = await client.query('SELECT version()');
+    console.log('✅ PostgreSQL version:', result.rows[0].version.split(' ')[1]);
+    
+    // Check if table exists
+    const tableCheck = await client.query(`
+      SELECT EXISTS (
+        SELECT FROM information_schema.tables 
+        WHERE table_schema = 'public' 
+        AND table_name = 'reservas'
+      );
+    `);
+    
+    if (!tableCheck.rows[0].exists) {
+      console.log('📋 Creating reservas table...');
+      await client.query(`
+        CREATE TABLE reservas (
+          id SERIAL PRIMARY KEY,
+          nombre TEXT,
+          email TEXT,
+          fecha TIMESTAMP WITH TIME ZONE,
+          evento TEXT,
+          creado TIMESTAMP DEFAULT now()
+        )
+      `);
+      console.log('✅ Table reservas created successfully');
+    } else {
+      const countResult = await client.query('SELECT COUNT(*) FROM reservas');
+      console.log(`✅ Found ${countResult.rows[0].count} existing reservations`);
+    }
+    
+    client.release();
+    return true;
+  } catch (error) {
+    console.error('❌ Database connection failed:', error.message);
+    return false;
+  }
+}
+
+// Initialize database on startup
+initializeDatabase().then(connected => {
   if (!connected) {
-    console.log('⚠️ Database connection failed, running in mock mode');
+    console.log('⚠️ Database connection failed, please check your configuration');
   }
 });
 
@@ -104,30 +148,6 @@ app.get('/', (req, res) => {
 // Get all reservations
 app.get('/api/reservas', async (req, res) => {
   try {
-    if (!dbConnected) {
-      // Return mock data when database is not available
-      const mockData = [
-        {
-          id: 1,
-          nombre: "Maria Garcia",
-          email: "maria@example.com",
-          fecha: "2024-01-25T14:30:00Z",
-          evento: "Classic Manicure",
-          creado: "2024-01-20T10:00:00Z"
-        },
-        {
-          id: 2,
-          nombre: "Ana Lopez",
-          email: "ana@example.com",
-          fecha: "2024-01-26T16:00:00Z",
-          evento: "Gel Manicure",
-          creado: "2024-01-20T11:30:00Z"
-        }
-      ];
-      console.log('📋 Returning mock data (database not connected)');
-      return res.json(mockData);
-    }
-    
     const result = await pool.query('SELECT * FROM reservas ORDER BY creado DESC');
     console.log(`📋 Found ${result.rows.length} reservations`);
     res.json(result.rows);
@@ -141,20 +161,6 @@ app.get('/api/reservas', async (req, res) => {
 app.post('/api/reservas', async (req, res) => {
   try {
     const { nombre, email, fecha, evento } = req.body;
-    
-    if (!dbConnected) {
-      // Mock response when database is not available
-      const mockReservation = {
-        id: Math.floor(Math.random() * 1000) + 100,
-        nombre,
-        email,
-        fecha,
-        evento,
-        creado: new Date().toISOString()
-      };
-      console.log('📝 Mock reservation created:', mockReservation);
-      return res.status(201).json(mockReservation);
-    }
     
     const query = `
       INSERT INTO reservas (nombre, email, fecha, evento)
@@ -174,12 +180,24 @@ app.post('/api/reservas', async (req, res) => {
 });
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({
-    status: 'ok',
-    database: dbConnected ? 'connected' : 'disconnected',
-    timestamp: new Date().toISOString()
-  });
+app.get('/api/health', async (req, res) => {
+  try {
+    const client = await pool.connect();
+    await client.query('SELECT 1');
+    client.release();
+    res.json({
+      status: 'ok',
+      database: 'connected',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    res.json({
+      status: 'ok',
+      database: 'disconnected',
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 app.listen(port, () => {

@@ -5,8 +5,7 @@
     "main": "server_with_db.js",
     "scripts": {
         "start": "node server_with_db.js",
-        "dev": "nodemon server_with_db.js",
-        "test": "node test_connection.js"
+        "dev": "nodemon server_with_db.js"
     },
     "dependencies": {
         "express": "^4.18.2",
