@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservas - Nail Studio</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><circle cx='50' cy='50' r='45' fill='%23ff69b4'/><path d='M30 50 Q50 30 70 50 Q50 70 30 50' fill='%23fff'/><circle cx='40' cy='45' r='3' fill='%23ff69b4'/><circle cx='60' cy='45' r='3' fill='%23ff69b4'/></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h2>Nail Studio</h2>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="index.html" class="nav-link">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a href="index.html#about" class="nav-link">Acerca de</a>
+                </li>
+                <li class="nav-item">
+                    <a href="index.html#services" class="nav-link">Servicios y Precios</a>
+                </li>
+                <li class="nav-item">
+                    <a href="index.html#gallery" class="nav-link">Galería</a>
+                </li>
+                <li class="nav-item">
+                    <a href="index.html#reviews" class="nav-link">Reseñas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="reservas.html" class="nav-link active">Reservas</a>
+                </li>
+                <li class="nav-item">
+                    <a href="index.html#contact" class="nav-link">Contacto</a>
+                </li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Reservations Section -->
+    <section id="reservations" class="reservations">
+        <div class="container">
+            <h2>Reservas Actuales</h2>
+            <div class="reservations-container">
+                <div id="reservationsList" class="reservations-list">
+                    <!-- Reservations will be loaded here -->
+                </div>
+                <div id="noReservations" class="no-reservations" style="display: none;">
+                    <p>No se encontraron reservas. ¡Sé el primero en reservar una cita!</p>
+                </div>
+            </div>
+            <button class="refresh-button" onclick="loadReservations()">Actualizar Reservas</button>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Nail Studio</h3>
+                    <p>Uñas Hermosas, Confianza en Ti</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Información de Contacto</h4>
+                    <p>Teléfono: (555) 123-4567</p>
+                    <p>Email: info@nailstudio.com</p>
+                    <p>Dirección: Calle Belleza 123, Ciudad, Estado 12345</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Horario</h4>
+                    <p>Lunes - Viernes: 9:00 AM - 7:00 PM</p>
+                    <p>Sábado: 9:00 AM - 5:00 PM</p>
+                    <p>Domingo: Cerrado</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Nail Studio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
