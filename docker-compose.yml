@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: n8n_postgres
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: River036
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./setup_database.sql:/docker-entrypoint-initdb.d/setup_database.sql
+    networks:
+      - nails_network
+
+  nails_app:
+    build: .
+    container_name: nails_app
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_NAME=postgres
+      - DB_USER=postgres
+      - DB_PASSWORD=River036
+      - DB_SSLMODE=disable
+      - PORT=3000
+    depends_on:
+      - postgres
+    networks:
+      - nails_network
+    volumes:
+      - ./public:/app/public
+
+volumes:
+  postgres_data:
+
+networks:
+  nails_network:
+    driver: bridge

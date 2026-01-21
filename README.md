@@ -10,6 +10,7 @@ A beautiful landing page for a nail beauty service with PostgreSQL database inte
 - **Booking System**: Online appointment reservation form with validation
 - **Service Showcase**: Display of nail services with pricing
 - **Real-time Updates**: Live reservation display with auto-refresh
+- **Docker Support**: Ready for containerized deployment
 
 ## 📁 Project Structure
 
@@ -18,6 +19,9 @@ nail-studio-landing/
 ├── server_with_db.js      # Express server with database connection
 ├── package.json           # Node.js dependencies
 ├── .env.example           # Environment variables template
+├── Dockerfile             # Docker image configuration
+├── docker-compose.yml     # Docker Compose setup
+├── .dockerignore         # Docker ignore file
 ├── public/
 │   ├── index.html         # Main landing page
 │   ├── styles.css         # Styling
