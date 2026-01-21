@@ -53,7 +53,14 @@ function displayReservations(reservations) {
     
     noReservations.style.display = 'none';
     
-    reservationsList.innerHTML = reservations.map(reservation => {
+    // Sort reservations by creation date (most recent first)
+    const sortedReservations = reservations.sort((a, b) => {
+        const dateA = new Date(a.creado);
+        const dateB = new Date(b.creado);
+        return dateB - dateA; // Descending order (newest first)
+    });
+    
+    reservationsList.innerHTML = sortedReservations.map(reservation => {
         const appointmentDate = new Date(reservation.fecha);
         const createdDate = new Date(reservation.creado);
         
