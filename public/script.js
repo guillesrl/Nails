@@ -103,18 +103,18 @@ bookingForm.addEventListener('submit', async (e) => {
             const result = await response.json();
             console.log('Reservation created:', result);
             
-            // Show success message
-            bookingForm.style.display = 'none';
+            // Show success message and reset form
             successMessage.style.display = 'block';
+            bookingForm.reset();
             
-            // Reset form after 3 seconds
+            // Load reservations to show the new one
+            loadReservations();
+            
+            // Hide success message and show form after 3 seconds
             setTimeout(() => {
-                bookingForm.reset();
                 bookingForm.style.display = 'flex';
                 successMessage.style.display = 'none';
-                // Refresh reservations list after successful booking
-                loadReservations();
-            }, 5000);
+            }, 3000);
             
         } else {
             const error = await response.json();
