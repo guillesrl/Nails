@@ -21,6 +21,11 @@ function scrollToBooking() {
     bookingSection.scrollIntoView({ behavior: 'smooth' });
 }
 
+function scrollToServices() {
+    const servicesSection = document.getElementById('services');
+    servicesSection.scrollIntoView({ behavior: 'smooth' });
+}
+
 // Load and display reservations
 async function loadReservations() {
     // Check if we're on the reservations page
