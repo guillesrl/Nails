@@ -23,6 +23,14 @@ function scrollToBooking() {
 
 // Load and display reservations
 async function loadReservations() {
+    // Check if we're on the reservations page
+    const reservationsList = document.getElementById('reservationsList');
+    const noReservations = document.getElementById('noReservations');
+    
+    if (!reservationsList || !noReservations) {
+        return; // Exit if not on reservations page
+    }
+    
     try {
         const response = await fetch('/api/reservas');
         if (response.ok) {
@@ -30,13 +38,13 @@ async function loadReservations() {
             displayReservations(reservations);
         } else {
             console.error('Error fetching reservations');
-            document.getElementById('reservationsList').innerHTML = '';
-            document.getElementById('noReservations').style.display = 'none';
+            reservationsList.innerHTML = '';
+            noReservations.style.display = 'none';
         }
     } catch (error) {
         console.error('Network error:', error);
-        document.getElementById('reservationsList').innerHTML = '';
-        document.getElementById('noReservations').style.display = 'none';
+        reservationsList.innerHTML = '';
+        noReservations.style.display = 'none';
     }
 }
 
@@ -44,6 +52,11 @@ async function loadReservations() {
 function displayReservations(reservations) {
     const reservationsList = document.getElementById('reservationsList');
     const noReservations = document.getElementById('noReservations');
+    
+    // Check if we're on the reservations page
+    if (!reservationsList || !noReservations) {
+        return; // Exit if not on reservations page
+    }
     
     if (reservations.length === 0) {
         reservationsList.innerHTML = '';
