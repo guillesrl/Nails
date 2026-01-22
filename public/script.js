@@ -99,7 +99,8 @@ function displayReservations(reservations) {
 const bookingForm = document.getElementById('bookingForm');
 const successMessage = document.getElementById('successMessage');
 
-bookingForm.addEventListener('submit', async (e) => {
+if (bookingForm && successMessage) {
+    bookingForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
     const formData = new FormData(bookingForm);
@@ -146,11 +147,14 @@ bookingForm.addEventListener('submit', async (e) => {
         alert('Network error. Please check your connection and try again.');
     }
 });
+}
 
 // Set minimum date for booking to today
 const fechaInput = document.getElementById('fecha');
-const today = new Date().toISOString().slice(0, 16);
-fechaInput.min = today;
+if (fechaInput) {
+    const today = new Date().toISOString().slice(0, 16);
+    fechaInput.min = today;
+}
 
 // Add animation on scroll
 const observerOptions = {
@@ -229,30 +233,42 @@ function validateForm() {
 }
 
 // Add real-time validation
-document.getElementById('nombre').addEventListener('blur', function() {
-    if (this.value.trim().length < 2) {
-        this.style.borderColor = '#ff6b6b';
-    } else {
-        this.style.borderColor = '#4caf50';
-    }
-});
+const nombreInput = document.getElementById('nombre');
+if (nombreInput) {
+    nombreInput.addEventListener('blur', function() {
+        if (this.value.trim().length < 2) {
+            this.style.borderColor = '#ff6b6b';
+        } else {
+            this.style.borderColor = '#4caf50';
+        }
+    });
+}
 
-document.getElementById('email').addEventListener('blur', function() {
-    if (!validateEmail(this.value.trim())) {
-        this.style.borderColor = '#ff6b6b';
-    } else {
-        this.style.borderColor = '#4caf50';
-    }
-});
+const emailInput = document.getElementById('email');
+if (emailInput) {
+    emailInput.addEventListener('blur', function() {
+        if (!validateEmail(this.value.trim())) {
+            this.style.borderColor = '#ff6b6b';
+        } else {
+            this.style.borderColor = '#4caf50';
+        }
+    });
+}
 
-document.getElementById('fecha').addEventListener('change', function() {
-    if (this.value) {
-        this.style.borderColor = '#4caf50';
-    }
-});
+const fechaInput2 = document.getElementById('fecha');
+if (fechaInput2) {
+    fechaInput2.addEventListener('change', function() {
+        if (this.value) {
+            this.style.borderColor = '#4caf50';
+        }
+    });
+}
 
-document.getElementById('evento').addEventListener('change', function() {
-    if (this.value) {
-        this.style.borderColor = '#4caf50';
-    }
-});
+const eventoInput = document.getElementById('evento');
+if (eventoInput) {
+    eventoInput.addEventListener('change', function() {
+        if (this.value) {
+            this.style.borderColor = '#4caf50';
+        }
+    });
+}
