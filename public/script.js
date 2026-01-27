@@ -63,7 +63,18 @@ function displayReservations(reservations) {
         return; // Exit if not on reservations page
     }
     
-    if (reservations.length === 0) {
+    // Get today's date without time
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Filter reservations to show only today and future dates
+    const futureReservations = reservations.filter(reservation => {
+        const appointmentDate = new Date(reservation.fecha);
+        appointmentDate.setHours(0, 0, 0, 0);
+        return appointmentDate >= today;
+    });
+    
+    if (futureReservations.length === 0) {
         reservationsList.innerHTML = '';
         noReservations.style.display = 'block';
         return;
@@ -71,11 +82,11 @@ function displayReservations(reservations) {
     
     noReservations.style.display = 'none';
     
-    // Sort reservations by appointment date (most recent first)
-    const sortedReservations = reservations.sort((a, b) => {
+    // Sort reservations by appointment date (closest first)
+    const sortedReservations = futureReservations.sort((a, b) => {
         const dateA = new Date(a.fecha);
         const dateB = new Date(b.fecha);
-        return dateB - dateA; // Descending order (newest first)
+        return dateA - dateB; // Ascending order (closest first)
     });
     
     reservationsList.innerHTML = sortedReservations.map(reservation => {
