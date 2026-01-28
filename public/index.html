@@ -190,13 +190,19 @@
           async function saveBookingToDatabase(event) {
             try {
               console.log('Full event data:', JSON.stringify(event, null, 2));
+              console.log('Event detail:', JSON.stringify(event.detail, null, 2));
+              
+              // Access data from event.detail (Cal.com uses detail, not data)
+              const detail = event.detail || {};
+              const responses = detail.responses || {};
+              const booking = detail.booking || {};
               
               // Try different paths to get the data
               const bookingData = {
-                nombre: event.data?.responses?.name || event.name || event.responses?.name || 'Unknown',
-                email: event.data?.responses?.email || event.email || event.responses?.email || 'unknown@example.com',
-                fecha: event.data?.startTime || event.startTime || event.date || new Date().toISOString(),
-                evento: event.data?.title || event.title || event.eventType || 'Reserva Nail Studio'
+                nombre: responses.name || responses.attendees?.[0]?.name || booking.name || detail.name || 'Unknown',
+                email: responses.email || responses.attendees?.[0]?.email || booking.email || detail.email || 'unknown@example.com',
+                fecha: detail.startTime || detail.start || booking.startTime || booking.start || new Date().toISOString(),
+                evento: detail.title || detail.eventType?.title || booking.eventType?.title || detail.eventType || 'Reserva Nail Studio'
               };
               
               console.log('Prepared booking data:', bookingData);
