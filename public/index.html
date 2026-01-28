@@ -144,6 +144,62 @@
           });
 
           Cal.ns.esmaltados("ui", {"theme":"light","hideEventTypeDetails":false,"layout":"month_view"});
+          
+          // Listen for booking events
+          Cal.ns.esmaltados("on", {
+            action: "bookingSuccessful",
+            callback: async function(event) {
+              try {
+                const bookingData = {
+                  nombre: event.data.responses.name,
+                  email: event.data.responses.email,
+                  fecha: event.data.startTime,
+                  evento: event.data.title
+                };
+                
+                // Send data to your backend API to save to PostgreSQL
+                const response = await fetch('/api/reservas', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify(bookingData)
+                });
+                
+                if (response.ok) {
+                  console.log('Reservation saved to database:', bookingData);
+                  // Optionally show success message to user
+                  showSuccessMessage('¡Cita reservada exitosamente!');
+                } else {
+                  console.error('Error saving reservation to database');
+                }
+              } catch (error) {
+                console.error('Error:', error);
+              }
+            }
+          });
+          
+          function showSuccessMessage(message) {
+            // Create and show a success message
+            const successDiv = document.createElement('div');
+            successDiv.style.cssText = `
+              position: fixed;
+              top: 20px;
+              right: 20px;
+              background: #4caf50;
+              color: white;
+              padding: 15px 20px;
+              border-radius: 5px;
+              z-index: 1000;
+              font-family: 'Poppins', sans-serif;
+            `;
+            successDiv.textContent = message;
+            document.body.appendChild(successDiv);
+            
+            setTimeout(() => {
+              document.body.removeChild(successDiv);
+            }, 3000);
+          }
           </script>
           <!-- Cal inline embed code ends -->
     </section>
