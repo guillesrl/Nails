@@ -145,60 +145,120 @@
 
           Cal.ns.esmaltados("ui", {"theme":"light","hideEventTypeDetails":false,"layout":"month_view"});
           
-          // Listen for booking events
+          // Debug: Log all Cal.com events
+          console.log('Cal.com initialized, setting up event listeners...');
+          
+          // Try multiple events to catch the booking cal.com
           Cal.ns.esmaltados("on", {
             action: "bookingSuccessful",
             callback: async function(event) {
-              try {
-                const bookingData = {
-                  nombre: event.data.responses.name,
-                  email: event.data.responses.email,
-                  fecha: event.data.startTime,
-                  evento: event.data.title
-                };
-                
-                // Send data to your backend API to save to PostgreSQL
-                const response = await fetch('/api/reservas', {
-                  method: 'POST',
-                  headers: {
-                    'Content-Type': 'application/json',
-                  },
-                  body: JSON.stringify(bookingData)
-                });
-                
-                if (response.ok) {
-                  console.log('Reservation saved to database:', bookingData);
-                  // Optionally show success message to user
-                  showSuccessMessage('¡Cita reservada exitosamente!');
-                } else {
-                  console.error('Error saving reservation to database');
-                }
-              } catch (error) {
-                console.error('Error:', error);
-              }
+              console.log('bookingSuccessful event triggered:', event);
+              await saveBookingToDatabase(event);
             }
           });
           
+          Cal.ns.esmaltados("on", {
+            action: "bookingCompleted",
+            callback: async function(event) {
+              console.log('bookingCompleted event triggered:', event);
+              await saveBookingToDatabase(event);
+            }
+          });
+          
+          Cal.ns.esmaltados("on", {
+            action: "bookingCreated",
+            callback: async function(event) {
+              console.log('bookingCreated event triggered:', event);
+              await saveBookingToDatabase(event);
+            }
+          });
+          
+          // Also try to listen for form submissions
+          setTimeout(() => {
+            const calForm = document.querySelector('#my-cal-inline-esmaltados form, #my-cal-inline-esmaltados [data-cal-booking-form]');
+            if (calForm) {
+              console.log('Found Cal.com form, adding submit listener');
+              calForm.addEventListener('submit', async function(e) {
+                console.log('Cal.com form submitted:', e);
+                // Try to get form data
+                const formData = new FormData(calForm);
+                console.log('Form data:', Object.fromEntries(formData));
+              });
+            }
+          }, 2000);
+          
+          async function saveBookingToDatabase(event) {
+            try {
+              console.log('Full event data:', JSON.stringify(event, null, 2));
+              
+              // Try different paths to get the data
+              const bookingData = {
+                nombre: event.data?.responses?.name || event.name || event.responses?.name || 'Unknown',
+                email: event.data?.responses?.email || event.email || event.responses?.email || 'unknown@example.com',
+                fecha: event.data?.startTime || event.startTime || event.date || new Date().toISOString(),
+                evento: event.data?.title || event.title || event.eventType || 'Reserva Nail Studio'
+              };
+              
+              console.log('Prepared booking data:', bookingData);
+              
+              // Send data to your backend API to save to PostgreSQL
+              const response = await fetch('/api/reservas', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(bookingData)
+              });
+              
+              console.log('API response status:', response.status);
+              console.log('API response ok:', response.ok);
+              
+              if (response.ok) {
+                const result = await response.json();
+                console.log('Reservation saved to database:', result);
+                showSuccessMessage('¡Cita reservada exitosamente!');
+              } else {
+                const errorText = await response.text();
+                console.error('Error saving reservation to database:', errorText);
+                showErrorMessage('Error al guardar la reserva en la base de datos');
+              }
+            } catch (error) {
+              console.error('Error saving booking:', error);
+              showErrorMessage('Error de conexión al guardar la reserva');
+            }
+          }
+          
           function showSuccessMessage(message) {
-            // Create and show a success message
-            const successDiv = document.createElement('div');
-            successDiv.style.cssText = `
+            showMessage(message, '#4caf50');
+          }
+          
+          function showErrorMessage(message) {
+            showMessage(message, '#f44336');
+          }
+          
+          function showMessage(message, backgroundColor) {
+            // Create and show a message
+            const messageDiv = document.createElement('div');
+            messageDiv.style.cssText = `
               position: fixed;
               top: 20px;
               right: 20px;
-              background: #4caf50;
+              background: ${backgroundColor};
               color: white;
               padding: 15px 20px;
               border-radius: 5px;
               z-index: 1000;
               font-family: 'Poppins', sans-serif;
+              max-width: 300px;
             `;
-            successDiv.textContent = message;
-            document.body.appendChild(successDiv);
+            messageDiv.textContent = message;
+            document.body.appendChild(messageDiv);
             
             setTimeout(() => {
-              document.body.removeChild(successDiv);
-            }, 3000);
+              if (document.body.contains(messageDiv)) {
+                document.body.removeChild(messageDiv);
+              }
+            }, 5000);
           }
           </script>
           <!-- Cal inline embed code ends -->
