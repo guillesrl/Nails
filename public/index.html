@@ -192,17 +192,19 @@
               console.log('Full event data:', JSON.stringify(event, null, 2));
               console.log('Event detail:', JSON.stringify(event.detail, null, 2));
               
-              // Access data from event.detail (Cal.com uses detail, not data)
+              // Access data from the correct nested structure
               const detail = event.detail || {};
-              const responses = detail.responses || {};
-              const booking = detail.booking || {};
+              const data = detail.data || {};
+              const booking = data.booking || {};
+              const responses = booking.responses || {};
+              const eventType = data.eventType || {};
               
-              // Try different paths to get the data
+              // Extract data from the correct paths
               const bookingData = {
-                nombre: responses.name || responses.attendees?.[0]?.name || booking.name || detail.name || 'Unknown',
-                email: responses.email || responses.attendees?.[0]?.email || booking.email || detail.email || 'unknown@example.com',
-                fecha: detail.startTime || detail.start || booking.startTime || booking.start || new Date().toISOString(),
-                evento: detail.title || detail.eventType?.title || booking.eventType?.title || detail.eventType || 'Reserva Nail Studio'
+                nombre: responses.name || booking.attendees?.[0]?.name || 'Unknown',
+                email: responses.email || booking.attendees?.[0]?.email || 'unknown@example.com',
+                fecha: booking.startTime || new Date().toISOString(),
+                evento: eventType.title || booking.title || 'Reserva Nail Studio'
               };
               
               console.log('Prepared booking data:', bookingData);
