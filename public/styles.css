@@ -576,17 +576,29 @@ body {
     }
 
     .reservation-card {
-        grid-template-columns: 1fr;
+        flex-direction: column;
         text-align: center;
-        gap: 1rem;
+        gap: 0.8rem;
+        padding: 1rem;
+        border-left: none;
+        border-top: 4px solid #d4a574;
+    }
+
+    .reservation-card:hover {
+        transform: translateY(-2px);
+        border-top-color: #c19660;
     }
 
     .reservation-number {
         margin: 0 auto;
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
     }
 
     .reservation-date {
         text-align: center;
+        min-width: auto;
     }
 
     .footer-content {
