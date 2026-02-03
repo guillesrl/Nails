@@ -95,7 +95,7 @@ function displayReservations(reservations) {
         
         return `
             <div class="reservation-card">
-                <div class="reservation-number">#${reservation.id}</div>
+                <div>#${reservation.id}</div>
                 <div class="reservation-details">
                     <h3>${reservation.nombre}</h3>
                     <p> 📧 ${reservation.email}</p>
