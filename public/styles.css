@@ -374,6 +374,7 @@ body {
 .reservation-date .time {
     font-size: 0.8rem;
     color: #666;
+    margin-left: 0.3rem;
 }
 
 .reservation-date .created {

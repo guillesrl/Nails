@@ -98,12 +98,11 @@ function displayReservations(reservations) {
                 <div class="reservation-number">#${reservation.id}</div>
                 <div class="reservation-details">
                     <h3>${reservation.nombre}</h3>
-                    <p>📧 ${reservation.email}</p>
+                    <p> 📧 ${reservation.email}</p>
                     <span class="service-type">${reservation.evento}</span>
                 </div>
                 <div class="reservation-date">
-                    <div class="date">${appointmentDate.toLocaleDateString()}</div>
-                    <div class="time">${appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</div>
+                    <div class="date">${appointmentDate.toLocaleDateString()} <span class="time">${appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></div>
                     <div class="created">Booked: ${createdDate.toLocaleDateString()}</div>
                 </div>
             </div>
