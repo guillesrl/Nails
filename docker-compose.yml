@@ -4,10 +4,12 @@ services:
   postgres:
     image: postgres:15
     container_name: n8n_postgres
+    env_file:
+      - .env
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: River036
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
     volumes:
@@ -21,14 +23,16 @@ services:
     container_name: nails_app
     ports:
       - "3000:3000"
+    env_file:
+      - .env
     environment:
       - DB_HOST=postgres
-      - DB_PORT=5432
-      - DB_NAME=postgres
-      - DB_USER=postgres
-      - DB_PASSWORD=River036
+      - DB_PORT=${DB_PORT}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
       - DB_SSLMODE=disable
-      - PORT=3000
+      - PORT=${PORT}
     depends_on:
       - postgres
     networks:

@@ -115,6 +115,9 @@ DB_SSLMODE=disable
 
 # Server Configuration
 PORT=3000
+
+# CORS Configuration (Production)
+ALLOWED_ORIGINS=https://estetica.guillers.es
 ```
 
 ## 🌐 API Endpoints
@@ -255,6 +258,7 @@ The application includes full Docker support:
    DB_PASSWORD=your_password
    DB_SSLMODE=disable
    PORT=3000
+   ALLOWED_ORIGINS=https://estetica.guillers.es
    ```
 
 ### Production Considerations
@@ -263,6 +267,27 @@ The application includes full Docker support:
 - Configure reverse proxy (Nginx)
 - Set up SSL certificates
 - Enable database backups
+
+## 🚀 Recomendaciones de Mejora
+
+### Seguridad
+- **CORS**: Actualizar configuración CORS para permitir sólo dominios específicos en producción
+- **Rate Limiting**: Implementar límites de solicitudes para endpoints API
+- **Validación de Entrada**: Añadir sanitización de entradas en el backend para prevenir SQL injection
+
+### Base de Datos
+- **Restricciones Únicas**: Añadir restricción UNIQUE en combinación email/fecha para evitar reservas duplicadas
+- **Índices**: Crear índices en campos frecuentemente consultados (fecha, creado)
+
+### Rendimiento Frontend
+- **Optimización de Imágenes**: Comprimir imágenes y usar formato WebP
+- **Lazy Loading**: Implementar carga diferida para imágenes debajo del fold
+- **CDN**: Usar CDN para recursos estáticos
+
+### Integración Cal.com
+- **Event Listeners**: Simplificar manejadores de eventos para usar solo "bookingCompleted"
+- **Extracción de Datos**: Mejorar extracción de datos desde objeto de evento
+- **Validación**: Añadir validación redundante para captura de reservas
 
 ## 🔍 Troubleshooting
 

@@ -11,9 +11,10 @@ const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(cors({
-  origin: '*',
+  origin: process.env.ALLOWED_ORIGINS || 'https://estetica.guillers.es',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: false
 }));
 app.use(express.json());
 app.use(express.static('public'));
