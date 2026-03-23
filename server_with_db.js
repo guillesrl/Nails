@@ -157,14 +157,17 @@ app.get('/api/reservas', async (req, res) => {
     const limit = parseInt(req.query.limit) || 10;
     const offset = (page - 1) * limit;
 
-    // Get total count
-    const countResult = await pool.query('SELECT COUNT(*) FROM reservas');
+    // Get total count (only today and future)
+    const countResult = await pool.query(
+      "SELECT COUNT(*) FROM reservas WHERE DATE(fecha) >= CURRENT_DATE"
+    );
     const total = parseInt(countResult.rows[0].count);
 
-    // Get paginated reservations (only future appointments by default)
+    // Get paginated reservations (today and future appointments)
+    // Using DATE(fecha) to compare only the date part, ignoring time
     const result = await pool.query(
       `SELECT * FROM reservas
-       WHERE fecha >= NOW()
+       WHERE DATE(fecha) >= CURRENT_DATE
        ORDER BY fecha ASC
        LIMIT $1 OFFSET $2`,
       [limit, offset]
