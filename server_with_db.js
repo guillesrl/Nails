@@ -150,12 +150,41 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-// Get all reservations
+// Get all reservations with pagination
 app.get('/api/reservas', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM reservas ORDER BY creado DESC');
-    console.log(`📋 Found ${result.rows.length} reservations`);
-    res.json(result.rows);
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const offset = (page - 1) * limit;
+
+    // Get total count
+    const countResult = await pool.query('SELECT COUNT(*) FROM reservas');
+    const total = parseInt(countResult.rows[0].count);
+
+    // Get paginated reservations (only future appointments by default)
+    const result = await pool.query(
+      `SELECT * FROM reservas
+       WHERE fecha >= NOW()
+       ORDER BY fecha ASC
+       LIMIT $1 OFFSET $2`,
+      [limit, offset]
+    );
+
+    const totalPages = Math.ceil(total / limit);
+
+    console.log(`📋 Page ${page}/${totalPages}: ${result.rows.length} reservations (total: ${total})`);
+
+    res.json({
+      reservations: result.rows,
+      pagination: {
+        page,
+        limit,
+        total,
+        totalPages,
+        hasNext: page < totalPages,
+        hasPrev: page > 1
+      }
+    });
   } catch (error) {
     console.error('❌ Error fetching reservations:', error.message);
     res.status(500).json({ error: 'Error fetching reservations' });

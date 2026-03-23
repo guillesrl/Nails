@@ -26,73 +26,57 @@ function scrollToServices() {
     servicesSection.scrollIntoView({ behavior: 'smooth' });
 }
 
+// Pagination state
+let currentPage = 1;
+const ITEMS_PER_PAGE = 10;
+
 // Load and display reservations
-async function loadReservations() {
-    // Check if we're on the reservations page
+async function loadReservations(page = 1) {
     const reservationsList = document.getElementById('reservationsList');
     const noReservations = document.getElementById('noReservations');
-    
+
     if (!reservationsList || !noReservations) {
-        return; // Exit if not on reservations page
+        return;
     }
-    
+
+    currentPage = page;
+
     try {
-        const response = await fetch('/api/reservas');
+        const response = await fetch(`/api/reservas?page=${page}&limit=${ITEMS_PER_PAGE}`);
         if (response.ok) {
-            const reservations = await response.json();
-            displayReservations(reservations);
+            const data = await response.json();
+            displayReservationsList(data.reservations);
+            renderPagination(data.pagination);
         } else {
             console.error('Error fetching reservations');
             reservationsList.innerHTML = '';
-            noReservations.style.display = 'none';
+            noReservations.style.display = 'block';
         }
     } catch (error) {
         console.error('Network error:', error);
         reservationsList.innerHTML = '';
-        noReservations.style.display = 'none';
+        noReservations.style.display = 'block';
     }
 }
 
-// Display reservations in the UI
-function displayReservations(reservations) {
+// Display reservations list
+function displayReservationsList(reservations) {
     const reservationsList = document.getElementById('reservationsList');
     const noReservations = document.getElementById('noReservations');
-    
-    // Check if we're on the reservations page
-    if (!reservationsList || !noReservations) {
-        return; // Exit if not on reservations page
-    }
-    
-    // Get today's date without time
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    // Filter reservations to show only today and future dates
-    const futureReservations = reservations.filter(reservation => {
-        const appointmentDate = new Date(reservation.fecha);
-        appointmentDate.setHours(0, 0, 0, 0);
-        return appointmentDate >= today;
-    });
-    
-    if (futureReservations.length === 0) {
+
+    if (reservations.length === 0) {
         reservationsList.innerHTML = '';
         noReservations.style.display = 'block';
+        noReservations.innerHTML = '<p>No hay reservas para mostrar en esta página.</p>';
         return;
     }
-    
+
     noReservations.style.display = 'none';
-    
-    // Sort reservations by appointment date (closest first)
-    const sortedReservations = futureReservations.sort((a, b) => {
-        const dateA = new Date(a.fecha);
-        const dateB = new Date(b.fecha);
-        return dateA - dateB; // Ascending order (closest first)
-    });
-    
-    reservationsList.innerHTML = sortedReservations.map(reservation => {
+
+    reservationsList.innerHTML = reservations.map(reservation => {
         const appointmentDate = new Date(reservation.fecha);
         const createdDate = new Date(reservation.creado);
-        
+
         return `
             <div class="reservation-card">
                 <div>#${reservation.id}</div>
@@ -108,6 +92,84 @@ function displayReservations(reservations) {
             </div>
         `;
     }).join('');
+}
+
+// Render pagination controls
+function renderPagination(pagination) {
+    const reservationsList = document.getElementById('reservationsList');
+    if (!reservationsList) return;
+
+    // Remove existing pagination
+    const existingPagination = document.getElementById('paginationControls');
+    if (existingPagination) {
+        existingPagination.remove();
+    }
+
+    // Hide if only one page
+    if (pagination.totalPages <= 1) return;
+
+    const paginationDiv = document.createElement('div');
+    paginationDiv.id = 'paginationControls';
+    paginationDiv.className = 'pagination-controls';
+    paginationDiv.style.cssText = `
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 0.5rem;
+        margin-top: 1.5rem;
+        flex-wrap: wrap;
+    `;
+
+    // Previous button
+    const prevBtn = document.createElement('button');
+    prevBtn.textContent = '← Anterior';
+    prevBtn.disabled = !pagination.hasPrev;
+    prevBtn.className = 'pagination-button';
+    prevBtn.style.cssText = `
+        padding: 0.5rem 1rem;
+        border: 2px solid #d4a574;
+        background: ${pagination.hasPrev ? '#d4a574' : '#f0f0f0'};
+        color: ${pagination.hasPrev ? 'white' : '#999'};
+        border-radius: 8px;
+        cursor: ${pagination.hasPrev ? 'pointer' : 'not-allowed'};
+        font-weight: 500;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    `;
+    prevBtn.onclick = () => loadReservations(pagination.page - 1);
+    paginationDiv.appendChild(prevBtn);
+
+    // Page info
+    const pageInfo = document.createElement('span');
+    pageInfo.textContent = `Página ${pagination.page} de ${pagination.totalPages}`;
+    pageInfo.style.cssText = `
+        font-weight: 500;
+        color: #666;
+        margin: 0 1rem;
+    `;
+    paginationDiv.appendChild(pageInfo);
+
+    // Next button
+    const nextBtn = document.createElement('button');
+    nextBtn.textContent = 'Siguiente →';
+    nextBtn.disabled = !pagination.hasNext;
+    nextBtn.className = 'pagination-button';
+    nextBtn.style.cssText = `
+        padding: 0.5rem 1rem;
+        border: 2px solid #d4a574;
+        background: ${pagination.hasNext ? '#d4a574' : '#f0f0f0'};
+        color: ${pagination.hasNext ? 'white' : '#999'};
+        border-radius: 8px;
+        cursor: ${pagination.hasNext ? 'pointer' : 'not-allowed'};
+        font-weight: 500;
+        transition: all 0.3s ease;
+        font-size: 0.9rem;
+    `;
+    nextBtn.onclick = () => loadReservations(pagination.page + 1);
+    paginationDiv.appendChild(nextBtn);
+
+    // Insert after reservations list
+    reservationsList.parentNode.insertBefore(paginationDiv, reservationsList.nextSibling);
 }
 
 // Form Submission
@@ -189,16 +251,16 @@ const observer = new IntersectionObserver((entries) => {
 // Observe elements for animation
 document.addEventListener('DOMContentLoaded', () => {
     const animatedElements = document.querySelectorAll('.service-card, .about-content, .hero-content');
-    
+
     animatedElements.forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
         el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
         observer.observe(el);
     });
-    
-    // Load reservations when page loads
-    loadReservations();
+
+    // Load reservations when page loads (page 1)
+    loadReservations(1);
 });
 
 // Form validation
