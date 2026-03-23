@@ -265,10 +265,26 @@ body {
     font-size: 0.95rem;
 }
 
+.service-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
 .price {
     font-size: 1.2rem;
     font-weight: 600;
     color: #d4a574;
+}
+
+.duration {
+    font-size: 0.9rem;
+    color: #888;
+    background-color: #f0f0f0;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-weight: 500;
 }
 
 /* Reservations Section */
