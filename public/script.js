@@ -1,4 +1,4 @@
-// Mobile Navigation Toggle
+// Toggle de Navegación Móvil
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
 const navLinks = document.querySelectorAll('.nav-link');
@@ -15,7 +15,7 @@ navLinks.forEach(link => {
     });
 });
 
-// Smooth Scrolling
+// Scroll Suave
 function scrollToBooking() {
     const bookingSection = document.getElementById('contact');
     bookingSection.scrollIntoView({ behavior: 'smooth' });
@@ -26,11 +26,11 @@ function scrollToServices() {
     servicesSection.scrollIntoView({ behavior: 'smooth' });
 }
 
-// Pagination state
+// Estado de paginación
 let currentPage = 1;
 const ITEMS_PER_PAGE = 10;
 
-// Load and display reservations
+// Cargar y mostrar reservas
 async function loadReservations(page = 1) {
     const reservationsList = document.getElementById('reservationsList');
     const noReservations = document.getElementById('noReservations');
@@ -48,18 +48,18 @@ async function loadReservations(page = 1) {
             displayReservationsList(data.reservations);
             renderPagination(data.pagination);
         } else {
-            console.error('Error fetching reservations');
+            console.error('Error obteniendo reservas');
             reservationsList.innerHTML = '';
             noReservations.style.display = 'block';
         }
     } catch (error) {
-        console.error('Network error:', error);
+        console.error('Error de red:', error);
         reservationsList.innerHTML = '';
         noReservations.style.display = 'block';
     }
 }
 
-// Display reservations list
+// Mostrar lista de reservas
 function displayReservationsList(reservations) {
     const reservationsList = document.getElementById('reservationsList');
     const noReservations = document.getElementById('noReservations');
@@ -67,7 +67,7 @@ function displayReservationsList(reservations) {
     if (reservations.length === 0) {
         reservationsList.innerHTML = '';
         noReservations.style.display = 'block';
-        noReservations.innerHTML = '<p>No hay reservas para mostrar en esta página.</p>';
+        noReservations.innerHTML = '<p>No hay reservas para mostrar en esta página.</p>'; // Ya está en español
         return;
     }
 
@@ -87,25 +87,25 @@ function displayReservationsList(reservations) {
                 </div>
                 <div class="reservation-date">
                     <div class="date">${appointmentDate.toLocaleDateString()} <span class="time">${appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></div>
-                    <div class="created">Booked: ${createdDate.toLocaleDateString()}</div>
+                    <div class="created">Reservada: ${createdDate.toLocaleDateString()}</div>
                 </div>
             </div>
         `;
     }).join('');
 }
 
-// Render pagination controls
+// Renderizar controles de paginación
 function renderPagination(pagination) {
     const reservationsList = document.getElementById('reservationsList');
     if (!reservationsList) return;
 
-    // Remove existing pagination
+    // Remover paginación existente
     const existingPagination = document.getElementById('paginationControls');
     if (existingPagination) {
         existingPagination.remove();
     }
 
-    // Hide if only one page
+    // Ocultar si solo hay una página
     if (pagination.totalPages <= 1) return;
 
     const paginationDiv = document.createElement('div');
@@ -120,7 +120,7 @@ function renderPagination(pagination) {
         flex-wrap: wrap;
     `;
 
-    // Previous button
+    // Botón Anterior
     const prevBtn = document.createElement('button');
     prevBtn.textContent = '← Anterior';
     prevBtn.disabled = !pagination.hasPrev;
@@ -139,7 +139,7 @@ function renderPagination(pagination) {
     prevBtn.onclick = () => loadReservations(pagination.page - 1);
     paginationDiv.appendChild(prevBtn);
 
-    // Page info
+    // Información de página
     const pageInfo = document.createElement('span');
     pageInfo.textContent = `Página ${pagination.page} de ${pagination.totalPages}`;
     pageInfo.style.cssText = `
@@ -149,7 +149,7 @@ function renderPagination(pagination) {
     `;
     paginationDiv.appendChild(pageInfo);
 
-    // Next button
+    // Botón Siguiente
     const nextBtn = document.createElement('button');
     nextBtn.textContent = 'Siguiente →';
     nextBtn.disabled = !pagination.hasNext;
@@ -168,7 +168,7 @@ function renderPagination(pagination) {
     nextBtn.onclick = () => loadReservations(pagination.page + 1);
     paginationDiv.appendChild(nextBtn);
 
-    // Insert after reservations list
+    // Insertar después de la lista de reservas
     reservationsList.parentNode.insertBefore(paginationDiv, reservationsList.nextSibling);
 }
 
@@ -217,23 +217,23 @@ if (bookingForm && successMessage) {
         } else {
             const error = await response.json();
             console.error('Error creating reservation:', error);
-            alert('Error creating reservation. Please try again.');
+            alert('Error creando reserva. Por favor intente de nuevo.');
         }
     } catch (error) {
-        console.error('Network error:', error);
-        alert('Network error. Please check your connection and try again.');
+        console.error('Error de red:', error);
+        alert('Error de red. Por favor verifique su conexión e intente de nuevo.');
     }
 });
 }
 
-// Set minimum date for booking to today
+// Establecer fecha mínima para reservas a hoy
 const fechaInput = document.getElementById('fecha');
 if (fechaInput) {
     const today = new Date().toISOString().slice(0, 16);
     fechaInput.min = today;
 }
 
-// Add animation on scroll
+// Añadir animación al hacer scroll
 const observerOptions = {
     threshold: 0.1,
     rootMargin: '0px 0px -50px 0px'
@@ -248,7 +248,7 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-// Observe elements for animation
+// Observar elementos para animación
 document.addEventListener('DOMContentLoaded', () => {
     const animatedElements = document.querySelectorAll('.service-card, .about-content, .hero-content');
 
@@ -259,11 +259,11 @@ document.addEventListener('DOMContentLoaded', () => {
         observer.observe(el);
     });
 
-    // Load reservations when page loads (page 1)
+    // Cargar reservas cuando la página carga (página 1)
     loadReservations(1);
 });
 
-// Form validation
+// Validación de formulario
 function validateEmail(email) {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return re.test(email);
@@ -277,30 +277,30 @@ function validateForm() {
     
     let isValid = true;
     
-    // Reset error styles
+    // Resetear estilos de error
     document.querySelectorAll('.form-group input, .form-group select').forEach(field => {
         field.style.borderColor = '#e0e0e0';
     });
     
-    // Validate name
+    // Validar nombre
     if (nombre.length < 2) {
         document.getElementById('nombre').style.borderColor = '#ff6b6b';
         isValid = false;
     }
     
-    // Validate email
+    // Validar email
     if (!validateEmail(email)) {
         document.getElementById('email').style.borderColor = '#ff6b6b';
         isValid = false;
     }
     
-    // Validate date
+    // Validar fecha
     if (!fecha) {
         document.getElementById('fecha').style.borderColor = '#ff6b6b';
         isValid = false;
     }
     
-    // Validate service
+    // Validar servicio
     if (!evento) {
         document.getElementById('evento').style.borderColor = '#ff6b6b';
         isValid = false;
@@ -309,14 +309,14 @@ function validateForm() {
     return isValid;
 }
 
-// Add real-time validation
+// Añadir validación en tiempo real
 const nombreInput = document.getElementById('nombre');
 if (nombreInput) {
     nombreInput.addEventListener('blur', function() {
         if (this.value.trim().length < 2) {
-            this.style.borderColor = '#ff6b6b';
+            this.style.borderColor = '#ff6b6b'; // Rojo error
         } else {
-            this.style.borderColor = '#4caf50';
+            this.style.borderColor = '#4caf50'; // Verde OK
         }
     });
 }
@@ -325,9 +325,9 @@ const emailInput = document.getElementById('email');
 if (emailInput) {
     emailInput.addEventListener('blur', function() {
         if (!validateEmail(this.value.trim())) {
-            this.style.borderColor = '#ff6b6b';
+            this.style.borderColor = '#ff6b6b'; // Rojo error
         } else {
-            this.style.borderColor = '#4caf50';
+            this.style.borderColor = '#4caf50'; // Verde OK
         }
     });
 }

@@ -1,37 +1,37 @@
 # Nail Studio Landing Page
 
-A beautiful landing page for a nail beauty service with PostgreSQL database integration for appointment reservations.
+Una hermosa landing page para un servicio de belleza de uñas con integración de base de datos PostgreSQL para reservas de citas.
 
-## 🚀 Features
+## 🚀 Características
 
-- **Responsive Design**: Mobile-friendly layout that works on all devices
-- **Modern UI**: Clean, professional design with smooth animations
-- **Database Integration**: PostgreSQL connection for storing reservations
-- **Booking System**: Online appointment reservation form with validation
-- **Service Showcase**: Display of nail services with pricing
-- **Real-time Updates**: Live reservation display with auto-refresh
-- **Docker Support**: Ready for containerized deployment
+- **Diseño Responsivo**: Diseño amigable para móviles que funciona en todos los dispositivos
+- **Interfaz Moderna**: Diseño limpio y profesional con animaciones suaves
+- **Integración de Base de Datos**: Conexión PostgreSQL para almacenar reservas
+- **Sistema de Reservas**: Formulario de reserva de citas en línea con validación
+- **Exhibición de Servicios**: Muestra de servicios de uñas con precios
+- **Actualizaciones en Tiempo Real**: Vista en vivo de reservas con auto-refresh
+- **Soporte Docker**: Listo para despliegue en contenedores
 
-## 📁 Project Structure
+## 📁 Estructura del Proyecto
 
 ```
 nail-studio-landing/
-├── server_with_db.js      # Express server with database connection
-├── package.json           # Node.js dependencies
-├── .env.example           # Environment variables template
-├── Dockerfile             # Docker image configuration
-├── docker-compose.yml     # Docker Compose setup
-├── .dockerignore         # Docker ignore file
+├── server_with_db.js      # Servidor Express con conexión a base de datos
+├── package.json           # Dependencias de Node.js
+├── .env.example           # Plantilla de variables de entorno
+├── Dockerfile             # Configuración de imagen Docker
+├── docker-compose.yml     # Configuración Docker Compose
+├── .dockerignore         # Archivos ignorados por Docker
 ├── public/
-│   ├── index.html         # Main landing page
-│   ├── styles.css         # Styling
-│   └── script.js          # Frontend JavaScript
-└── README.md              # This file
+│   ├── index.html         # Página principal de landing
+│   ├── styles.css         # Estilos
+│   └── script.js          # JavaScript frontend
+└── README.md              # Este archivo
 ```
 
-## 🗄️ Database Schema
+## 🗄️ Esquema de Base de Datos
 
-The application uses a PostgreSQL table called `reservas`:
+La aplicación usa una tabla de PostgreSQL llamada `reservas`:
 
 ```sql
 CREATE TABLE reservas (
@@ -44,37 +44,37 @@ CREATE TABLE reservas (
 );
 ```
 
-## 🛠️ Setup Instructions
+## 🛠️ Instrucciones de Configuración
 
-### Option 1: Docker Deployment (Recommended)
+### Opción 1: Despliegue con Docker (Recomendado)
 
-1. **Clone the repository**:
+1. **Clonar el repositorio**:
    ```bash
    git clone <repository-url>
    cd nail-studio-landing
    ```
 
-2. **Configure environment**:
+2. **Configurar entorno**:
    ```bash
    cp .env.example .env
-   # Edit .env with your database credentials
+   # Editar .env con tus credenciales de base de datos
    ```
 
-3. **Run with Docker**:
+3. **Ejecutar con Docker**:
    ```bash
    ./start_with_docker.sh
    ```
 
-### Option 2: Manual Setup
+### Opción 2: Configuración Manual
 
-1. **Install dependencies**:
+1. **Instalar dependencias**:
    ```bash
    npm install
    ```
 
-2. **Set up database**:
+2. **Configurar base de datos**:
    ```bash
-   # Create the reservas table in your PostgreSQL database
+   # Crear la tabla reservas en tu base de datos PostgreSQL
    psql -U postgres -d postgres -c "
    CREATE TABLE IF NOT EXISTS reservas (
      id SERIAL PRIMARY KEY,
@@ -87,45 +87,45 @@ CREATE TABLE reservas (
    "
    ```
 
-3. **Configure environment**:
+3. **Configurar variables de entorno**:
    ```bash
    cp .env.example .env
-   # Edit .env with your database connection details
+   # Editar .env con los detalles de tu conexión a la base de datos
    ```
 
-4. **Start the application**:
+4. **Iniciar la aplicación**:
    ```bash
    npm start
-   # or
+   # o
    node server_with_db.js
    ```
 
-## 🔧 Environment Variables
+## 🔧 Variables de Entorno
 
-Create a `.env` file with the following variables:
+Crea un archivo `.env` con las siguientes variables:
 
 ```env
-# Database Configuration
-DB_HOST=your_database_host
+# Configuración de Base de Datos
+DB_HOST=tu_host_de_base_de_datos
 DB_PORT=5432
 DB_NAME=postgres
 DB_USER=postgres
-DB_PASSWORD=your_password
+DB_PASSWORD=tu_contraseña
 DB_SSLMODE=disable
 
-# Server Configuration
+# Configuración del Servidor
 PORT=3000
 
-# CORS Configuration (Production)
+# Configuración CORS (Producción)
 ALLOWED_ORIGINS=https://estetica.guillers.es
 ```
 
-## 🌐 API Endpoints
+## 🌐 Endpoints de la API
 
 ### GET `/api/reservas`
-Retrieve all reservations ordered by creation date (newest first)
+Recupera todas las reservas ordenadas por fecha de creación (más recientes primero)
 
-**Response**:
+**Respuesta**:
 ```json
 [
   {
@@ -140,9 +140,9 @@ Retrieve all reservations ordered by creation date (newest first)
 ```
 
 ### POST `/api/reservas`
-Create a new reservation
+Crear una nueva reserva
 
-**Request Body**:
+**Cuerpo de la Petición**:
 ```json
 {
   "nombre": "John Doe",
@@ -152,7 +152,7 @@ Create a new reservation
 }
 ```
 
-**Response**:
+**Respuesta**:
 ```json
 {
   "id": 1,
@@ -165,9 +165,9 @@ Create a new reservation
 ```
 
 ### GET `/api/health`
-Health check endpoint
+Endpoint de verificación de estado
 
-**Response**:
+**Respuesta**:
 ```json
 {
   "status": "ok",
@@ -176,102 +176,102 @@ Health check endpoint
 }
 ```
 
-## 🎨 Features Implementation
+## 🎨 Implementación de Características
 
-### Frontend Features
-- **Responsive Navigation**: Mobile hamburger menu
-- **Hero Section**: Eye-catching landing with call-to-action
-- **Services Grid**: Display of available nail services
-- **Booking Form**: Interactive form with real-time validation
-- **Reservations Display**: Live view of all bookings
-- **Smooth Scrolling**: Navigation between sections
-- **Success Feedback**: Confirmation messages
+### Características Frontend
+- **Navegación Responsiva**: Menú hamburguesa en móviles
+- **Sección Hero**: Landing atractivo con llamada a la acción
+- **Cuadrícula de Servicios**: Muestra de servicios de uñas disponibles
+- **Formulario de Reserva**: Formulario interactivo con validación en tiempo real
+- **Visualización de Reservas**: Vista en vivo de todas las reservas
+- **Scroll Suave**: Navegación entre secciones
+- **Retroalimentación de Éxito**: Mensajes de confirmación
 
-### Backend Features
-- **Express Server**: RESTful API architecture
-- **PostgreSQL Integration**: Secure database connection with retry logic
-- **CORS Support**: Cross-origin request handling
-- **Error Handling**: Comprehensive error management
-- **Fallback Mode**: Mock data when database is unavailable
-- **Health Monitoring**: Database connection status tracking
+### Características Backend
+- **Servidor Express**: Arquitectura RESTful API
+- **Integración PostgreSQL**: Conexión segura a base de datos con lógica de reintento
+- **Soporte CORS**: Manejo de peticiones cross-origin
+- **Manejo de Errores**: Gestión comprehensiva de errores
+- **Modo Fallback**: Datos de ejemplo cuando la base de datos no está disponible
+- **Monitoreo de Salud**: Seguimiento del estado de conexión a la base de datos
 
-## 🐳 Docker Deployment
+## 🐳 Despliegue con Docker
 
-The application includes full Docker support:
+La aplicación incluye soporte completo para Docker:
 
-### Services
-- **postgres**: PostgreSQL 15 database
-- **nails_app**: Node.js application server
+### Servicios
+- **postgres**: Base de datos PostgreSQL 15
+- **nails_app**: Servidor de aplicación Node.js
 
-### Networks
-- **nails_network**: Isolated Docker network for inter-service communication
+### Redes
+- **nails_network**: Red Docker aislada para comunicación entre servicios
 
-### Volumes
-- **postgres_data**: Persistent database storage
-- **public/**: Shared static files
+### Volúmenes
+- **postgres_data**: Almacenamiento persistente de base de datos
+- **public/**: Archivos estáticos compartidos
 
-## 📱 Technologies Used
+## 📱 Tecnologías Utilizadas
 
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
 - **Backend**: Node.js, Express.js
-- **Database**: PostgreSQL
-- **Styling**: CSS Grid, Flexbox, CSS Animations
-- **Fonts**: Google Fonts (Poppins)
-- **Containerization**: Docker, Docker Compose
+- **Base de Datos**: PostgreSQL
+- **Estilos**: CSS Grid, Flexbox, CSS Animations
+- **Fuentes**: Google Fonts (Poppins)
+- **Contenedores**: Docker, Docker Compose
 
-## 🔧 Customization
+## 🔧 Personalización
 
-### Adding New Services
-1. Update `public/index.html` - Add service cards to the services grid
-2. Update `public/index.html` - Add options to the booking form select
+### Agregar Nuevos Servicios
+1. Actualizar `public/index.html` - Añadir tarjetas de servicios a la cuadrícula
+2. Actualizar `public/index.html` - Añadir opciones al select del formulario de reserva
 
-### Styling Changes
-- Modify `public/styles.css` for visual customizations
-- Update CSS variables for consistent theming
+### Cambios de Estilos
+- Modificar `public/styles.css` para personalizaciones visuales
+- Actualizar variables CSS para tematización consistente
 
-### Database Modifications
-- Run SQL scripts directly against your PostgreSQL database
-- Update the server file if you modify the table structure
+### Modificaciones de Base de Datos
+- Ejecutar scripts SQL directamente en tu base de datos PostgreSQL
+- Actualizar el archivo del servidor si modificas la estructura de tablas
 
-## 🚀 Deployment
+## 🚀 Despliegue
 
-### Easy Panel / Container Deployment
-1. **Push to GitHub**:
+### Easy Panel / Despliegue en Contenedor
+1. **Push a GitHub**:
    ```bash
    git add .
    git commit -m "Initial commit"
    git push origin main
    ```
 
-2. **Import in Easy Panel**:
-   - Add new container
-   - Use Git repository URL
-   - Set environment variables
-   - Configure port mapping (3000)
+2. **Importar en Easy Panel**:
+   - Añadir nuevo contenedor
+   - Usar URL del repositorio Git
+   - Configurar variables de entorno
+   - Configurar mapeo de puertos (3000)
 
-3. **Environment Variables in Easy Panel**:
+3. **Variables de Entorno en Easy Panel**:
    ```
-   DB_HOST=your_internal_database_host
+   DB_HOST=tu_host_de_base_de_datos_interno
    DB_PORT=5432
    DB_NAME=postgres
    DB_USER=postgres
-   DB_PASSWORD=your_password
+   DB_PASSWORD=tu_contraseña
    DB_SSLMODE=disable
    PORT=3000
    ALLOWED_ORIGINS=https://estetica.guillers.es
    ```
 
-### Production Considerations
-- Set `NODE_ENV=production`
-- Use process manager (PM2)
-- Configure reverse proxy (Nginx)
-- Set up SSL certificates
-- Enable database backups
+### Consideraciones de Producción
+- Configurar `NODE_ENV=production`
+- Usar gestor de procesos (PM2)
+- Configurar proxy inverso (Nginx)
+- Configurar certificados SSL
+- Habilitar respaldos de base de datos
 
 ## 🚀 Recomendaciones de Mejora
 
 ### Seguridad
-- **CORS**: Actualizar configuración CORS para permitir sólo dominios específicos en producción
+- **CORS**: Actualizar configuración CORS para permitir solo dominios específicos en producción
 - **Rate Limiting**: Implementar límites de solicitudes para endpoints API
 - **Validación de Entrada**: Añadir sanitización de entradas en el backend para prevenir SQL injection
 
@@ -289,34 +289,34 @@ The application includes full Docker support:
 - **Extracción de Datos**: Mejorar extracción de datos desde objeto de evento
 - **Validación**: Añadir validación redundante para captura de reservas
 
-## 🔍 Troubleshooting
+## 🔍 Solución de Problemas
 
-### Database Connection Issues
-- Verify database is running and accessible
-- Check connection string and credentials
-- Ensure network connectivity between services
-- Review database logs for connection errors
+### Problemas de Conexión a Base de Datos
+- Verificar que la base de datos esté funcionando y accesible
+- Revisar cadena de conexión y credenciales
+- Asegurar conectividad de red entre servicios
+- Revisar logs de la base de datos para errores de conexión
 
-### Form Submission Issues
-- Check browser console for JavaScript errors
-- Verify API endpoints are responding
-- Check network requests in browser dev tools
-- Review server logs for error messages
+### Problemas de Envío de Formulario
+- Revisar consola del navegador para errores JavaScript
+- Verificar que los endpoints API estén respondiendo
+- Revisar peticiones de red en herramientas de desarrollo
+- Revisar logs del servidor para mensajes de error
 
-### Container Issues
-- Check container logs: `docker logs <container-name>`
-- Verify environment variables are set correctly
-- Ensure network connectivity between containers
-- Check port mappings and firewall settings
+### Problemas de Contenedor
+- Revisar logs de contenedor: `docker logs <nombre-contenedor>`
+- Verificar que las variables de entorno estén configuradas correctamente
+- Asegurar conectividad de red entre contenedores
+- Revisar mapeos de puertos y configuración de firewall
 
-## 📄 License
+## 📄 Licencia
 
-This project is licensed under the ISC License.
+Este proyecto está bajo la Licencia ISC.
 
-## 🤝 Contributing
+## 🤝 Contribuir
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
+1. Hacer fork del repositorio
+2. Crear una rama de feature
+3. Realizar cambios
+4. Probar exhaustivamente
+5. Enviar un pull request
