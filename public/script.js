@@ -1,3 +1,9 @@
+function esc(value) {
+    const d = document.createElement('div');
+    d.textContent = value == null ? '' : String(value);
+    return d.innerHTML;
+}
+
 // Toggle de Navegación Móvil
 const hamburger = document.querySelector('.hamburger');
 const navMenu = document.querySelector('.nav-menu');
@@ -79,15 +85,15 @@ function displayReservationsList(reservations) {
 
         return `
             <div class="reservation-card">
-                <div>#${reservation.id}</div>
+                <div>#${Number(reservation.id)}</div>
                 <div class="reservation-details">
-                    <h3>${reservation.nombre}</h3>
-                    <p> 📧 ${reservation.email}</p>
-                    <span class="service-type">${reservation.evento}</span>
+                    <h3>${esc(reservation.nombre)}</h3>
+                    <p> 📧 ${esc(reservation.email)}</p>
+                    <span class="service-type">${esc(reservation.evento)}</span>
                 </div>
                 <div class="reservation-date">
-                    <div class="date">${appointmentDate.toLocaleDateString()} <span class="time">${appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span></div>
-                    <div class="created">Reservada: ${createdDate.toLocaleDateString()}</div>
+                    <div class="date">${esc(appointmentDate.toLocaleDateString())} <span class="time">${esc(appointmentDate.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}))}</span></div>
+                    <div class="created">Reservada: ${esc(createdDate.toLocaleDateString())}</div>
                 </div>
             </div>
         `;
