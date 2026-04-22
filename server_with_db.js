@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const { Pool } = require('pg');
 
 // Cargar variables de entorno
@@ -9,6 +10,22 @@ require('dotenv').config({ path: path.join(__dirname, '.env') });
 const app = express();
 const port = process.env.PORT || 3000;
 
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 50,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Too many requests, please try again later.' },
+});
+
+const createLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Reservation limit reached, please try again in an hour.' },
+});
+
 // Middleware
 app.use(cors({
   origin: process.env.ALLOWED_ORIGINS || 'https://estetica.guillers.es',
@@ -17,6 +34,7 @@ app.use(cors({
   credentials: false
 }));
 app.use(express.json());
+app.use('/api', apiLimiter);
 app.use(express.static('public'));
 
 // Debug: Imprimir variables de entorno
@@ -195,7 +213,7 @@ app.get('/api/reservas', async (req, res) => {
 });
 
 // Crear una nueva reserva
-app.post('/api/reservas', async (req, res) => {
+app.post('/api/reservas', createLimiter, async (req, res) => {
   try {
     const { nombre, email, fecha, evento } = req.body;
     
