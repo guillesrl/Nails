@@ -191,6 +191,7 @@ Endpoint de verificación de estado
 - **Servidor Express**: Arquitectura RESTful API
 - **Integración PostgreSQL**: Conexión segura a base de datos con lógica de reintento
 - **Soporte CORS**: Manejo de peticiones cross-origin
+- **Rate Limiting**: 50 req/15min general, 5 reservas/hora por IP
 - **Manejo de Errores**: Gestión comprehensiva de errores
 - **Modo Fallback**: Datos de ejemplo cuando la base de datos no está disponible
 - **Monitoreo de Salud**: Seguimiento del estado de conexión a la base de datos
@@ -272,7 +273,6 @@ La aplicación incluye soporte completo para Docker:
 
 ### Seguridad
 - **CORS**: Actualizar configuración CORS para permitir solo dominios específicos en producción
-- **Rate Limiting**: Implementar límites de solicitudes para endpoints API
 - **Validación de Entrada**: Añadir sanitización de entradas en el backend para prevenir SQL injection
 
 ### Base de Datos
